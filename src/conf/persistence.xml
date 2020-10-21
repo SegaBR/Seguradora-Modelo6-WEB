@@ -7,6 +7,9 @@
     <class>br.edu.ifsul.modelo.Carro</class>
     <class>br.edu.ifsul.modelo.Pessoa</class>
     <class>br.edu.ifsul.modelo.Corretor</class>
+    <class>br.edu.ifsul.modelo.Cobertura</class>
+    <class>br.edu.ifsul.modelo.Seguro</class>
+    <class>br.edu.ifsul.modelo.Sinistro</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
