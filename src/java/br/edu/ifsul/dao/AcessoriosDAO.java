@@ -5,6 +5,7 @@
  */
 package br.edu.ifsul.dao;
 
+import br.edu.ifsul.converters.ConverterOrdem;
 import br.edu.ifsul.modelo.Acessorios;
 import java.io.Serializable;
 import javax.ejb.Stateful;
@@ -18,5 +19,10 @@ public class AcessoriosDAO<TIPO> extends DAOGenerico<Acessorios> implements Seri
     public AcessoriosDAO(){
         super();
         classePersistente=Acessorios.class;
+        //ordenações 
+        listaOrdem.add(new Ordem("id", "ID", "="));
+        listaOrdem.add(new Ordem("descricao", "Descricao", "like"));
+        ordemAtual=listaOrdem.get(1);
+        converteOrdem=new ConverterOrdem(listaOrdem);
     }
 }

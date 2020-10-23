@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition template="/templates/template.xhtml">
         <ui:define name="titulo">Manutençao de Pessoas</ui:define>
@@ -15,8 +16,48 @@
                            update="formEdicao"
                            process="@this"
                            oncomplete="PF('dlg').show();"/>
+                
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem: "/>
+                        <p:selectOneMenu value="#{controlePessoa.dao.ordemAtual}"
+                                         id="selectOrdem"
+                                         converter="#{controlePessoa.dao.converteOrdem}">
+                            <f:selectItems value="#{controlePessoa.dao.listaOrdem}"
+                                           var="ord" itemValue="#{ord.atributo}"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro:"/>
+                        <p:inputText value="#{controlePessoa.dao.filtro}">
+                            <p:ajax update="listagem" event="blur"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:outputLabel value="Máximo de objetos:"/>
+                        <p:inputNumber value="#{controlePessoa.dao.maximoObjetos}" size="3"
+                                       thousandSeparator="" decimalSeparator="" decimalPlaces="0">
+                            <p:ajax event="blur" update="listagem"/>
+                        </p:inputNumber>
+                        <p:commandButton actionListener="#{controlePessoa.dao.primeiro()}"
+                                         title="Primeiro"
+                                         icon="pi pi-step-backward" update="listagem"/>
+                        <p:commandButton actionListener="#{controlePessoa.dao.anterior()}"
+                                         title="Anterior"
+                                         icon="pi pi-chevron-left" update="listagem"/>
+                        <p:commandButton actionListener="#{controlePessoa.dao.proximo()}"
+                                         title="Proximo"
+                                         icon="pi pi-chevron-right" update="listagem"/>
+                        <p:commandButton actionListener="#{controlePessoa.dao.ultimo()}"
+                                         title="Ultimo"
+                                         icon="pi pi-step-forward" update="listagem"/>
+                    </p:panelGrid>
+                </div>
+                
+                
                 <p:dataTable value="#{controlePessoa.dao.listaObjetos}" var="obj"
                              id="listagem">
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controlePessoa.dao.mensagemNavegacao}"/>
+                    </f:facet>
                      <p:column headerText="ID">
                         <p:outputLabel value="#{obj.id}"/>
                     </p:column>
