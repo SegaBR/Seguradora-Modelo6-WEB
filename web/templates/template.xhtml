@@ -31,15 +31,19 @@
                                         value="Manutenção de Pessoas"
                                         ajax="false"/>
                         </p:submenu>
-                        <p:submenu label="Operações">
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Operações">
+                    <p:column>
+                        <p:submenu label="Seguros">
                             <p:menuitem action="#{controleSeguro.listar()}"
                                         value="Manutenção de Seguros"
                                         ajax="false"/>
                             <p:menuitem action="#{controleSinistro.listar()}"
-                                        value="Manutenção de Sinistros"
+                                        value="Listagem de Sinistros"
                                         ajax="false"/>
                             <p:menuitem action="#{controleCobertura.listar()}"
-                                        value="Manutenção de Coberturas"
+                                        value="Listagem de Coberturas"
                                         ajax="false"/>
                         </p:submenu>
                     </p:column>

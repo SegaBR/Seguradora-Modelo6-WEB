@@ -65,24 +65,6 @@
                     <p:column headerText="Valor">
                         <p:outputLabel value="#{obj.valor}"/>
                     </p:column>
-                    <p:column headerText="Ações">
-                        <div align="center">
-                            <p:commandButton actionListener="#{controleCobertura.alterar(obj.id)}"
-                                             icon="pi pi-pencil"
-                                             title="Editar"
-                                             update="formEdicao"
-                                             process="@this"
-                                             oncomplete="PF('dlg').show();"/>
-                            <p:commandButton actionListener="#{controleCobertura.excluir(obj.id)}"
-                                             icon="pi pi-trash"
-                                             update="@form"
-                                             process="@this"
-                                             title="Remover"
-                                             onclick="if (!confirm('Confirma a exclusão?'))
-                                                         return false"/>
-
-                        </div>
-                    </p:column>
                 </p:dataTable>
             </h:form>
 
