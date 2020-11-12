@@ -31,12 +31,23 @@
                                         value="Manutenção de Pessoas"
                                         ajax="false"/>
                         </p:submenu>
+                        <p:submenu label="Operações">
+                            <p:menuitem action="#{controleSeguro.listar()}"
+                                        value="Manutenção de Seguros"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controleSinistro.listar()}"
+                                        value="Manutenção de Sinistros"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controleCobertura.listar()}"
+                                        value="Manutenção de Coberturas"
+                                        ajax="false"/>
+                        </p:submenu>
                     </p:column>
                 </p:submenu>
             </p:megaMenu>
         </h:form>
         <ui:insert name="conteudo">
-            
+
         </ui:insert>
         <ui:include src="ajaxstatus.xhtml"/>
     </h:body>

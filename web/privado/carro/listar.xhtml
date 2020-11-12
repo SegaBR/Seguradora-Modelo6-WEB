@@ -12,11 +12,11 @@
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
                 <p:commandButton value="Novo" actionListener="#{controleCarro.novo()}"
-                           icon="pi pi-plus"
-                           update="formEdicao"
-                           process="@this"
-                           oncomplete="PF('dlg').show();"/>
-                 <div align="center">
+                                 icon="pi pi-plus"
+                                 update="formEdicao"
+                                 process="@this"
+                                 oncomplete="PF('dlg').show();"/>
+                <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>
                         <p:selectOneMenu value="#{controleCarro.dao.ordemAtual}"
@@ -50,10 +50,10 @@
                                          icon="pi pi-step-forward" update="listagem"/>
                     </p:panelGrid>
                 </div>
-                
+
                 <p:dataTable value="#{controleCarro.dao.listaObjetos}" var="obj"
                              id="listagem">
-                     <f:facet name="footer">
+                    <f:facet name="footer">
                         <p:outputLabel value="#{controleCarro.dao.mensagemNavegacao}"/>
                     </f:facet>
                     <p:column headerText="ID">
@@ -81,62 +81,108 @@
                         <p:outputLabel value="#{obj.pessoa.cpf}"/>
                     </p:column>
                     <p:column headerText="Ações">
-                         <div align="center">
-                             <p:commandButton actionListener="#{controleCarro.alterar(obj.id)}"
-                                              icon="pi pi-pencil"
-                                              title="Editar"
-                                              update="formEdicao"
-                                              process="@this"
-                                              oncomplete="PF('dlg').show();"/>
-                              <p:commandButton actionListener="#{controleCarro.excluir(obj.id)}"
-                                              icon="pi pi-trash"
-                                              update="@form"
-                                              process="@this"
-                                              title="Remover"
-                                              onclick="if(!confirm('Confirma a exclusão?')) return false"/>
-                             
-                         </div>
-                        </p:column>
+                        <div align="center">
+                            <p:commandButton actionListener="#{controleCarro.alterar(obj.id)}"
+                                             icon="pi pi-pencil"
+                                             title="Editar"
+                                             update="formEdicao"
+                                             process="@this"
+                                             oncomplete="PF('dlg').show();"/>
+                            <p:commandButton actionListener="#{controleCarro.excluir(obj.id)}"
+                                             icon="pi pi-trash"
+                                             update="@form"
+                                             process="@this"
+                                             title="Remover"
+                                             onclick="if (!confirm('Confirma a exclusão?'))
+                                                         return false"/>
+
+                        </div>
+                    </p:column>
                 </p:dataTable>
             </h:form>
-            
+
             <p:dialog header="Edição" widgetVar="dlg" resizable="false"
-                modal="true" width="50%" height="100%">
+                      modal="true" width="50%" height="100%">
                 <h:form id="formEdicao" prependId="false">
                     <p:growl id="growl"/>
-                    <div align="center">
-                        <p:panelGrid columns="2">
-                            <p:outputLabel value="ID"/>
-                            <p:inputText value="#{controleCarro.objeto.id}"
-                                         size="5" readonly="true"/>
-                            <p:outputLabel value="Placa"/>
-                            <p:inputText value="#{controleCarro.objeto.placa}"
-                                         size="7" maxlength="7"/>
-                            <p:outputLabel value="Renavam"/>
-                            <p:inputText value="#{controleCarro.objeto.renavam}"
-                                         size="11" maxlength="11"/>
-                             <p:outputLabel value="Modelo"/>
-                             <p:inputText value="#{controleCarro.objeto.modelo}"
-                                         size="50" maxlength="50"/>
-                            <p:outputLabel value="Fabricante"/>
-                            <p:inputText value="#{controleCarro.objeto.fabricante}"
-                                         size="50" maxlength="50"/>
-                            <p:outputLabel value="Ano Fabricante"/>
-                            <p:inputText value="#{controleCarro.objeto.anoFabricacao}"
-                                         size="4"/>
-                            <p:outputLabel value="Ano Modelo" />
-                            <p:inputText value="#{controleCarro.objeto.anoModelo}"
-                                         size="4"/>
-                            <p:outputLabel value="Pessoa" for="selectPessoa" />
-                            <p:selectOneMenu id="selectPessoa" value="#{controleCarro.objeto.pessoa}"
-                                             filter="true" filterMatchMode="startWith">
-                                <f:selectItem itemLabel="Selecione um registro" noSelectionOption="true"/>
-                                <f:converter binding="#{converterPessoa}"/>
-                                <f:selectItems value="#{controleCarro.daoPessoa.listaTodos}"
-                                               var="est" itemLabel="#{est.cpf}"/>
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                    </div>
+                    <p:tabView id="tab">
+                        <p:tab title="Dados Principais">
+                            <div align="center">
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="ID"/>
+                                    <p:inputText value="#{controleCarro.objeto.id}"
+                                                 size="5" readonly="true"/>
+                                    <p:outputLabel value="Placa"/>
+                                    <p:inputText value="#{controleCarro.objeto.placa}"
+                                                 size="7" maxlength="7"/>
+                                    <p:outputLabel value="Renavam"/>
+                                    <p:inputText value="#{controleCarro.objeto.renavam}"
+                                                 size="11" maxlength="11"/>
+                                    <p:outputLabel value="Modelo"/>
+                                    <p:inputText value="#{controleCarro.objeto.modelo}"
+                                                 size="50" maxlength="50"/>
+                                    <p:outputLabel value="Fabricante"/>
+                                    <p:inputText value="#{controleCarro.objeto.fabricante}"
+                                                 size="50" maxlength="50"/>
+                                    <p:outputLabel value="Ano Fabricação"/>
+                                    <p:inputText value="#{controleCarro.objeto.anoFabricacao}"
+                                                 size="4" maxlength="4"/>
+                                    <p:outputLabel value="Ano Modelo"/>
+                                    <p:inputText value="#{controleCarro.objeto.anoModelo}"
+                                                   size="4" maxlength="4"/>
+                                    <p:outputLabel value="Pessoa" for="selectPessoa" />
+                                    <p:selectOneMenu id="selectPessoa" value="#{controleCarro.objeto.pessoa}"
+                                                     filter="true" filterMatchMode="startWith">
+                                        <f:selectItem itemLabel="Selecione um registro!" noSelectionOption="true"/>
+                                        <f:converter binding="#{converterPessoa}"/>
+                                        <f:selectItems value="#{controleCarro.daoPessoa.listaTodos}"
+                                                       var="pes" itemLabel="#{pes.cpf}"/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                        
+                        <p:tab title="Acessorios">
+                            <p:dataTable value="#{controleCarro.objeto.acessoriosCarro}"
+                                         var="ace" id="listaAcessorios">
+                                <f:facet name="header">
+                                    <p:panelGrid columns="3">
+                                        <p:outputLabel value="Acessorios"/>
+                                        <p:selectOneMenu value="#{controleCarro.acessorios}"
+                                                         id="selectAcessorios">
+                                            <f:converter binding="#{converterAcessorios}"/>
+                                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um registro!"/>
+                                            <f:selectItems value="#{controleCarro.daoAcessorios.listaTodos}" var="a"
+                                                           itemLabel="#{a.descricao}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="Adicionar"
+                                                         actionListener="#{controleCarro.salvarAcessorio()}"
+                                                         update="listaAcessorios growl"
+                                                         id="btnAdicionarAcessorio"
+                                                         process="btnAdicionarAcessorio selectAcessorios"
+                                                         icon="pi pi-plus"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                                <p:column headerText="ID">
+                                    <p:outputLabel value="#{ace.id}"/>
+                                </p:column>
+                                 <p:column headerText="Descrição">
+                                    <p:outputLabel value="#{ace.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton id="btnRemoverAcessorio"
+                                                         actionListener="#{controleCarro.excluirAcessorio(ace)}"
+                                                         process="btnRemoverAcessorio" update="listaAcessorios growl"
+                                                         icon="pi pi-trash"
+                                                         onclick="if(!confirm('Confirma a remoção do acessorio?'))
+                                                                    return false"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                    
                     <p:panel>
                         <div align="center">
                             <p:commandButton value="Salvar"
@@ -148,9 +194,9 @@
                     </p:panel>
                 </h:form>
             </p:dialog>
-            
+
         </ui:define>
     </ui:composition>
-    
+
 </html>
 

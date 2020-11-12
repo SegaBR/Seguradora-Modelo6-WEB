@@ -1,7 +1,11 @@
 package br.edu.ifsul.controle;
 
-import br.edu.ifsul.dao.AcessoriosDAO;
-import br.edu.ifsul.modelo.Acessorios;
+import br.edu.ifsul.dao.SinistroDAO;
+import br.edu.ifsul.dao.PessoaDAO;
+import br.edu.ifsul.dao.SeguroDAO;
+import br.edu.ifsul.modelo.Sinistro;
+import br.edu.ifsul.modelo.Pessoa;
+import br.edu.ifsul.modelo.Seguro;
 import br.edu.ifsul.util.Util;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -12,25 +16,26 @@ import javax.inject.Named;
  *
  * @author sega
  */
-@Named(value = "controleAcessorios")
+@Named(value = "controleSinistro")
 @ViewScoped
-public class ControleAcessorios implements Serializable {
+public class ControleSinistro implements Serializable {
 
     @EJB
-    private AcessoriosDAO<Acessorios> dao;
-    private Acessorios objeto;
-    private Boolean novoObjeto;
+    private SinistroDAO<Sinistro> dao;
+    private Sinistro objeto;
+    @EJB
+    private SeguroDAO<Seguro> daoSeguro;
     
-    public ControleAcessorios() {
+    public ControleSinistro() {
         
     }
     
     public String listar() {
-        return "/privado/acessorios/listar?faces-redirect=true";
+        return "/privado/sinistro/listar?faces-redirect=true";
     }
     
     public void novo() {
-        objeto = new Acessorios();
+        objeto = new Sinistro();
     }
     
     public void alterar(Object id) {
@@ -64,28 +69,30 @@ public class ControleAcessorios implements Serializable {
         }        
     }
     
-    public AcessoriosDAO<Acessorios> getDao() {
+    public SinistroDAO<Sinistro> getDao() {
         return dao;
     }
     
-    public void setDao(AcessoriosDAO<Acessorios> dao) {
+    public void setDao(SinistroDAO<Sinistro> dao) {
         this.dao = dao;
     }
     
-    public Acessorios getObjeto() {
+    public Sinistro getObjeto() {
         return objeto;
     }
     
-    public void setObjeto(Acessorios objeto) {
+    public void setObjeto(Sinistro objeto) {
         this.objeto = objeto;
     }
 
-    public Boolean getNovoObjeto() {
-        return novoObjeto;
+    public SeguroDAO<Seguro> getDaoSeguro() {
+        return daoSeguro;
     }
 
-    public void setNovoObjeto(Boolean novoObjeto) {
-        this.novoObjeto = novoObjeto;
+    public void setDaoSeguro(SeguroDAO<Seguro> daoSeguro) {
+        this.daoSeguro = daoSeguro;
     }
+
+    
     
 }

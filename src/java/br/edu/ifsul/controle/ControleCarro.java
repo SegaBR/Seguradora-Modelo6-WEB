@@ -1,7 +1,9 @@
 package br.edu.ifsul.controle;
 
+import br.edu.ifsul.dao.AcessoriosDAO;
 import br.edu.ifsul.dao.CarroDAO;
 import br.edu.ifsul.dao.PessoaDAO;
+import br.edu.ifsul.modelo.Acessorios;
 import br.edu.ifsul.modelo.Carro;
 import br.edu.ifsul.modelo.Pessoa;
 import br.edu.ifsul.util.Util;
@@ -21,8 +23,12 @@ public class ControleCarro implements Serializable {
     @EJB
     private CarroDAO<Carro> dao;
     private Carro objeto;
+    private Boolean novoObjeto;
     @EJB
     private PessoaDAO<Pessoa> daoPessoa;
+    @EJB
+    private AcessoriosDAO<Acessorios> daoAcessorios;
+    private Acessorios acessorios;
     
     public ControleCarro() {
         
@@ -67,6 +73,20 @@ public class ControleCarro implements Serializable {
         }        
     }
     
+    public void salvarAcessorio(){
+        if(!objeto.getAcessoriosCarro().contains(acessorios)){
+            objeto.getAcessoriosCarro().add(acessorios);
+            Util.mensagemInformacao("Acessorio adicionado com sucesso!");
+        }else{
+            Util.mensagemErro("Carro já possui este acessorio!");
+        }
+    }
+    
+    public void excluirAcessorio(Acessorios obj){
+        objeto.getAcessoriosCarro().remove(obj);
+        Util.mensagemInformacao("Acessorio removido com sucesso!");
+    }
+    
     public CarroDAO<Carro> getDao() {
         return dao;
     }
@@ -89,6 +109,30 @@ public class ControleCarro implements Serializable {
 
     public void setDaoPessoa(PessoaDAO<Pessoa> daoPessoa) {
         this.daoPessoa = daoPessoa;
+    }
+
+    public AcessoriosDAO<Acessorios> getDaoAcessorios() {
+        return daoAcessorios;
+    }
+
+    public void setDaoAcessorios(AcessoriosDAO<Acessorios> daoAcessorios) {
+        this.daoAcessorios = daoAcessorios;
+    }
+
+    public Boolean getNovoObjeto() {
+        return novoObjeto;
+    }
+
+    public void setNovoObjeto(Boolean novoObjeto) {
+        this.novoObjeto = novoObjeto;
+    }
+
+    public Acessorios getAcessorios() {
+        return acessorios;
+    }
+
+    public void setAcessorios(Acessorios acessorios) {
+        this.acessorios = acessorios;
     }
     
 }

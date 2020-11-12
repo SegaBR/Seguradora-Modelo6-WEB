@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog header="Edição" widgetVar="dlg" resizable="false"
+              modal="true" width="50%" height="100%">
+        <h:form id="formEdicao" prependId="false">
+            <p:growl id="growl"/>
+            <p:tabView id="tab">
+                <p:tab title="Dados Principais">
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="ID"/>
+                            <p:inputText value="#{controleSeguro.objeto.id}"
+                                         size="5" readonly="true"/>
+                            <p:outputLabel value="Data" for="txtData"/>
+                            <p:calendar id="txtData" value="#{controleSeguro.objeto.data}"
+                                        mask="true" pattern="dd/MM/yyyy" navigator="true" size="10">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:calendar>
+                            <p:outputLabel value="Incio Vigencia" for="txtInicioVigencia"/>
+                            <p:calendar id="txtInicioVigencia" value="#{controleSeguro.objeto.inicioVigencia}"
+                                        mask="true" pattern="dd/MM/yyyy" navigator="true" size="10">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:calendar>
+                            <p:outputLabel value="Fim Vigencia" for="txtFimVigencia"/>
+                            <p:calendar id="txtFimVigencia" value="#{controleSeguro.objeto.fimVigencia}"
+                                        mask="true" pattern="dd/MM/yyyy" navigator="true" size="10">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:calendar>
+                            <p:outputLabel value="Valor Total" for="txtValorTotal"/>
+                            <p:inputNumber id="txtValorTotal" value="#{controleSeguro.objeto.valorTotal}"
+                                           thousandSeparator="" decimalSeparator="." decimalPlaces="2" 
+                                           size="10"/>
+                            <p:outputLabel value="Valor Fipe" for="txtValorFipe"/>
+                            <p:inputNumber id="txtValorFipe" value="#{controleSeguro.objeto.valorFipe}"
+                                           thousandSeparator="" decimalSeparator="." decimalPlaces="2" 
+                                           size="10"/>
+                            <p:outputLabel value="Carro" for="selectCarro" />
+                            <p:selectOneMenu id="selectCarro" value="#{controleSeguro.objeto.carro}"
+                                             filter="true" filterMatchMode="startWith">
+                                <f:selectItem itemLabel="Selecione um registro" noSelectionOption="true"/>
+                                <f:converter binding="#{converterCarro}"/>
+                                <f:selectItems value="#{controleSeguro.daoCarro.listaTodos}"
+                                               var="car" itemLabel="#{car.placa}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Corretor" for="selectCorretor" />
+                            <p:selectOneMenu id="selectCorretor" value="#{controleSeguro.objeto.corretor}"
+                                             filter="true" filterMatchMode="startWith">
+                                <f:selectItem itemLabel="Selecione um registro" noSelectionOption="true"/>
+                                <f:converter binding="#{converterCorretor}"/>
+                                <f:selectItems value="#{controleSeguro.daoCorretor.listaTodos}"
+                                               var="cor" itemLabel="#{cor.cpf}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </div>
+                </p:tab>
+                <p:tab title="Coberturas">
+                    <p:dataTable value="#{controleSeguro.objeto.cobertura}"
+                                 var="cobertura" rowIndexVar="idxCobertura" id="listaCobertura">
+                        <f:facet name="header">
+                            <p:commandButton value="Nova Cobertura"
+                                             actionListener="#{controleSeguro.novaCobertura()}"
+                                             update="formCobertura" icon="pi pi-plus"
+                                             process="@this"
+                                             oncomplete="PF('dlgCobertura').show();"/>
+                        </f:facet>
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{cobertura.id}"/>
+                        </p:column>
+                        <p:column headerText="Descrição">
+                            <p:outputLabel value="#{cobertura.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Valor">
+                            <p:outputLabel value="#{cobertura.valor}"/>
+                        </p:column>
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="pi pi-pencil"
+                                                 actionListener="#{controleSeguro.alterarCobertura(idxCobertura)}"
+                                                 update=":formCobertura" process="@this"
+                                                 oncomplete="PF('dlgCobertura').show();"/>
+                                <p:commandButton icon="pi pi-trash"
+                                                 actionListener="#{controleSeguro.removerCobertura(idxCobertura)}"
+                                                 update="tab:listaCobertura growl tab:txtValorTotal" process="@this"
+                                                 onclick="if (!confirm('Confirma a exclusão do objeto?'))
+                                                             return false"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+
+                <p:tab title="Sinistros">
+                    <p:dataTable value="#{controleSeguro.objeto.sinistro}"
+                                 var="sinistro" rowIndexVar="idxSinistro" id="listaSinistro">
+                       <f:facet name="header">
+                             <p:commandButton value="Novo Sinistro"
+                                             actionListener="#{controleSeguro.novoSinistro()}"
+                                             update="formSinistro" icon="pi pi-plus"
+                                             process="@this"
+                                             oncomplete="PF('dlgSinistro').show();"/>
+                        </f:facet> 
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{sinistro.id}"/>
+                        </p:column>
+                        <p:column headerText="Descrição">
+                            <p:outputLabel value="#{sinistro.descricao}"/>
+                        </p:column>
+                        <p:column headerText="Data">
+                            <p:outputLabel value="#{sinistro.data}">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Cidade">
+                            <p:outputLabel value="#{sinistro.cidade}"/>
+                        </p:column>
+                        <p:column headerText="Estado">
+                            <p:outputLabel value="#{sinistro.estado}"/>
+                        </p:column>
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="pi pi-pencil"
+                                                 actionListener="#{controleSeguro.alterarSinistro(idxSinistro)}"
+                                                 update=":formSinistro" process="@this"
+                                                 oncomplete="PF('dlgSinistro').show();"/>
+                                <p:commandButton icon="pi pi-trash"
+                                                 actionListener="#{controleSeguro.removerSinistro(idxSinistro)}"
+                                                 update="tab:listaSinistro growl" process="@this"
+                                                 onclick="if (!confirm('Confirma a exclusão do objeto?'))
+                                                             return false"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+
+            <p:panel>
+                <div align="center">
+                    <p:commandButton value="Salvar"
+                                     icon="pi pi-save"
+                                     actionListener="#{controleSeguro.salvar()}"
+                                     update="formEdicao formListagem"
+                                     oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"/>
+                </div>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+    <p:dialog header="Edição de Cobertura" widgetVar="dlgCobertura"
+              resizable="false" modal="true">
+        <h:form id="formCobertura">
+            <p:growl/>
+            <p:panelGrid columns="2">
+                <f:facet name="footer">
+                    <div align="center">
+                        <p:commandButton value="Salvar"
+                                         icon="pi pi-save"
+                                         actionListener="#{controleSeguro.salvarCobertura()}"
+                                         update="tab:listaCobertura tab:txtValorTotal growl"
+                                         process="@form"
+                                         oncomplete="if(!args.validationFailed){PF('dlgCobertura').hide();}"/>
+                    </div>
+                </f:facet>
+                <p:outputLabel value="ID"/>
+                <p:inputText value="#{controleSeguro.cobertura.id}" readonly="true" size="5"/>
+                <p:outputLabel value="Cobertura" for="selectCobertura"/>
+                <p:inputText id="selectCobertura" value="#{controleSeguro.cobertura.descricao}" />
+                <p:outputLabel value="Valor" for="txtValor"/>
+                <p:inputNumber id="txtValor" value="#{controleSeguro.cobertura.valor}"
+                               thousandSeparator="" decimalSeparator="." decimalPlaces="2" size="10"/>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+    <p:dialog header="Edição de Sinistro" widgetVar="dlgSinistro"
+              resizable="false" modal="true">
+        <h:form id="formSinistro">
+            <p:growl/>
+            <p:panelGrid columns="2">
+                <f:facet name="footer">
+                    <div align="center">
+                        <p:commandButton value="Salvar"
+                                         icon="pi pi-save"
+                                         actionListener="#{controleSeguro.salvarSinistro()}"
+                                         update="tab:listaSinistro growl"
+                                         process="@form"
+                                         oncomplete="if(!args.validationFailed){PF('dlgSinistro').hide();}"/>
+                    </div>
+                </f:facet>
+                <p:outputLabel value="ID"/>
+                <p:inputText value="#{controleSeguro.sinistro.id}" readonly="true" size="5"/>
+                <p:outputLabel value="sinistro" for="selectSinistro"/>
+                <p:inputText id="selectSinistro" value="#{controleSeguro.sinistro.descricao}" />
+                <p:outputLabel value="Data" for="txtData"/>
+                <p:calendar id="txtData" value="#{controleSeguro.sinistro.data}"
+                            mask="true" pattern="dd/MM/yyyy" navigator="true" size="10">
+                    <f:converter converterId="converterCalendar"/>
+                </p:calendar>
+                <p:outputLabel value="Cidade"/>
+                <p:inputText value="#{controleSeguro.sinistro.cidade}"
+                             size="50" maxlength="50"/>
+                <p:outputLabel value="Estado"/>
+                <p:inputText value="#{controleSeguro.sinistro.estado}"
+                             size="50" maxlength="50"/>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+</html>
+
