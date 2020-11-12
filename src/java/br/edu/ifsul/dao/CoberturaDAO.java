@@ -26,4 +26,11 @@ public class CoberturaDAO<TIPO> extends DAOGenerico<Cobertura> implements Serial
         ordemAtual=listaOrdem.get(1);
         converteOrdem=new ConverterOrdem(listaOrdem);
     }
+    
+    
+    public void remove(Integer id) throws Exception{
+        Cobertura c = em.find(Cobertura.class, id);
+        super.em.remove(c);
+    } 
+    
 }

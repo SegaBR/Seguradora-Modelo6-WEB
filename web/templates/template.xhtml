@@ -44,6 +44,15 @@
                         </p:submenu>
                     </p:column>
                 </p:submenu>
+                <p:submenu label="Relatórios">
+                    <p:column>
+                        <p:submenu label="Seguros">
+                            <p:menuitem action="#{controleSeguro.imprimeSeguros()}"
+                                        value="Seguros"
+                                        ajax="false" target="_blank"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
             </p:megaMenu>
         </h:form>
         <ui:insert name="conteudo">

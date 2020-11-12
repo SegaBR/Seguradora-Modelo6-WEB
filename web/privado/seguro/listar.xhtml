@@ -101,6 +101,9 @@
                                              title="Remover"
                                              onclick="if (!confirm('Confirma a exclusão?'))
                                                          return false"/>
+                            <p:commandButton action="#{controleSeguro.imprimeSegurosSub(obj.id)}"
+                                             icon="pi pi-print" ajax="false"
+                                             onclick="this.form.target='_blank';"/>
                         </div>
                     </p:column>
                 </p:dataTable>

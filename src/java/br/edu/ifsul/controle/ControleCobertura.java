@@ -45,8 +45,19 @@ public class ControleCobertura implements Serializable {
             Util.mensagemErro("Erro ao recuperar objeto: " + Util.getMensagemErro(e));
         }
     }
+    public void excluir(Integer id) {
+        try {
+            //objeto = dao.getObjectById(id);
+            dao.remove(id);
+            Util.mensagemInformacao("Objeto removido com sucesso!");
+        } catch (Exception e) {
+            Util.mensagemErro("Erro ao excluir objeto: " + Util.getMensagemErro(e));
+        }
+    }
     
+    /*
     public void excluir(Object id) {
+        System.out.println("Dentro do excluir cobertura "+id);
         try {
             objeto = dao.getObjectById(id);
             dao.remove(objeto);
@@ -54,7 +65,7 @@ public class ControleCobertura implements Serializable {
         } catch (Exception e) {
             Util.mensagemErro("Erro ao excluir objeto: " + Util.getMensagemErro(e));
         }        
-    }
+    }*/
     
     public void salvar() {
         try {

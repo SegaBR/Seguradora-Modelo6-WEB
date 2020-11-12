@@ -13,7 +13,11 @@ import br.edu.ifsul.modelo.Seguro;
 import br.edu.ifsul.modelo.Pessoa;
 import br.edu.ifsul.modelo.Sinistro;
 import br.edu.ifsul.util.Util;
+import br.edu.ifsul.util.UtilRelatorios;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -45,6 +49,19 @@ public class ControleSeguro implements Serializable {
     
     public ControleSeguro() {
         
+    }
+    
+    public void imprimeSeguros(){
+        HashMap parametros=new HashMap();
+        UtilRelatorios.imprimeRelatorio("/relatorioSeguro", parametros, dao.getListaTodos());
+    }
+    
+    public void imprimeSegurosSub(Integer id) throws Exception{
+        objeto=dao.getObjectById(id);
+        List<Seguro> lista=new ArrayList<>();
+        lista.add(objeto);
+        HashMap parametros=new HashMap();
+        UtilRelatorios.imprimeRelatorio("/relatorioSeguroSub", parametros, lista);
     }
     
     public String listar() {
