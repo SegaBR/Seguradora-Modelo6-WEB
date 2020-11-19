@@ -10,6 +10,7 @@
     <class>br.edu.ifsul.modelo.Cobertura</class>
     <class>br.edu.ifsul.modelo.Seguro</class>
     <class>br.edu.ifsul.modelo.Sinistro</class>
+    <class>br.edu.ifsul.modelo.Permissao</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

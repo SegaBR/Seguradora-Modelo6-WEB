@@ -7,94 +7,72 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Manutençao de Seguros</ui:define>
+        <ui:define name="titulo">Manutençao de Permissao</ui:define>
         <ui:define name="conteudo">
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
-                <p:commandButton value="Novo" actionListener="#{controleSeguro.novo()}"
+                <p:commandButton value="Novo" actionListener="#{controlePermissao.novo()}"
                                  icon="pi pi-plus"
                                  update="formEdicao"
                                  process="@this"
                                  oncomplete="PF('dlg').show();"/>
+
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>
-                        <p:selectOneMenu value="#{controleSeguro.dao.ordemAtual}"
+                        <p:selectOneMenu value="#{controlePermissao.dao.ordemAtual}"
                                          id="selectOrdem"
-                                         converter="#{controleSeguro.dao.converteOrdem}">
-                            <f:selectItems value="#{controleSeguro.dao.listaOrdem}"
+                                         converter="#{controlePermissao.dao.converteOrdem}">
+                            <f:selectItems value="#{controlePermissao.dao.listaOrdem}"
                                            var="ord" itemValue="#{ord.atributo}"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro:"/>
-                        <p:inputText value="#{controleSeguro.dao.filtro}">
+                        <p:inputText value="#{controlePermissao.dao.filtro}">
                             <p:ajax update="listagem" event="blur"/>
                         </p:inputText>
                         <p:commandButton value="Filtrar" update="listagem"/>
                         <p:outputLabel value="Máximo de objetos:"/>
-                        <p:inputNumber value="#{controleSeguro.dao.maximoObjetos}" size="3"
+                        <p:inputNumber value="#{controlePermissao.dao.maximoObjetos}" size="3"
                                        thousandSeparator="" decimalSeparator="" decimalPlaces="0">
                             <p:ajax event="blur" update="listagem"/>
                         </p:inputNumber>
-                        <p:commandButton actionListener="#{controleSeguro.dao.primeiro()}"
+                        <p:commandButton actionListener="#{controlePermissao.dao.primeiro()}"
                                          title="Primeiro"
                                          icon="pi pi-step-backward" update="listagem"/>
-                        <p:commandButton actionListener="#{controleSeguro.dao.anterior()}"
+                        <p:commandButton actionListener="#{controlePermissao.dao.anterior()}"
                                          title="Anterior"
                                          icon="pi pi-chevron-left" update="listagem"/>
-                        <p:commandButton actionListener="#{controleSeguro.dao.proximo()}"
+                        <p:commandButton actionListener="#{controlePermissao.dao.proximo()}"
                                          title="Proximo"
                                          icon="pi pi-chevron-right" update="listagem"/>
-                        <p:commandButton actionListener="#{controleSeguro.dao.ultimo()}"
+                        <p:commandButton actionListener="#{controlePermissao.dao.ultimo()}"
                                          title="Ultimo"
                                          icon="pi pi-step-forward" update="listagem"/>
                     </p:panelGrid>
                 </div>
 
-                <p:dataTable value="#{controleSeguro.dao.listaObjetos}" var="obj"
+                <p:dataTable value="#{controlePermissao.dao.listaObjetos}" var="obj"
                              id="listagem">
                     <f:facet name="footer">
-                        <p:outputLabel value="#{controleSeguro.dao.mensagemNavegacao}"/>
+                        <p:outputLabel value="#{controlePermissao.dao.mensagemNavegacao}"/>
                     </f:facet>
-                    <p:column headerText="ID">
-                        <p:outputLabel value="#{obj.id}"/>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
                     </p:column>
-                    <p:column headerText="Data">
-                        <p:outputLabel value="#{obj.data}">
-                            <f:converter converterId="converterCalendar"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Inicio Vigencia">
-                        <p:outputLabel value="#{obj.inicioVigencia}">
-                            <f:converter converterId="converterCalendar"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Fim Vigencia">
-                        <p:outputLabel value="#{obj.fimVigencia}">
-                            <f:converter converterId="converterCalendar"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Valor Total">
-                        <p:outputLabel value="#{obj.valorTotal}"/>
-                    </p:column>
-                    <p:column headerText="Valor Fipe">
-                        <p:outputLabel value="#{obj.valorFipe}"/>
-                    </p:column>
-                    <p:column headerText="Carro">
-                        <p:outputLabel value="#{obj.carro.placa}"/>
-                    </p:column>
-                    <p:column headerText="Corretor">
-                        <p:outputLabel value="#{obj.corretor.cpf}"/>
+                    <p:column headerText="Descrição">
+                        <p:outputLabel value="#{obj.descricao}"/>
                     </p:column>
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton actionListener="#{controleSeguro.alterar(obj.id)}"
+                            <p:commandButton actionListener="#{controlePermissao.alterar(obj.nome)}"
                                              icon="pi pi-pencil"
                                              title="Editar"
                                              update="formEdicao"
                                              process="@this"
-                                             oncomplete="PF('dlg').show();"/>
-                            <p:commandButton actionListener="#{controleSeguro.excluir(obj.id)}"
+                                             oncomplete="PF('dlg').show();"
+                                             rendered="#{p:ifGranted('ADMINISTRADOR')}"/>
+                            <p:commandButton actionListener="#{controlePermissao.excluir(obj.nome)}"
                                              icon="pi pi-trash"
                                              update="@form"
                                              process="@this"
@@ -102,16 +80,38 @@
                                              onclick="if (!confirm('Confirma a exclusão?'))
                                                          return false"
                                              rendered="#{p:ifGranted('ADMINISTRADOR')}"/>
-                            <p:commandButton action="#{controleSeguro.imprimeSegurosSub(obj.id)}"
-                                             icon="pi pi-print" ajax="false"
-                                             onclick="this.form.target='_blank';"/>
+
                         </div>
                     </p:column>
                 </p:dataTable>
             </h:form>
 
-            <ui:include src="formulario.xhtml"/>
-            
+            <p:dialog header="Edição" widgetVar="dlg" resizable="false"
+                      modal="true" width="50%" height="100%">
+                <h:form id="formEdicao" prependId="false">
+                    <p:growl id="growl"/>
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="Nome"/>
+                            <p:inputText value="#{controlePermissao.objeto.nome}"
+                                         size="5" readonly="false"/>
+                            <p:outputLabel value="Descrição" for="txtDescricao"/>
+                            <p:inputText value="#{controlePermissao.objeto.descricao}" id="txtDescricao"
+                                         size="30" maxlength="50" placeholder="Obrigatório"/>
+                        </p:panelGrid>
+                    </div>
+                    <p:panel>
+                        <div align="center">
+                            <p:commandButton value="Salvar"
+                                             icon="pi pi-save"
+                                             actionListener="#{controlePermissao.salvar()}"
+                                             update="formEdicao formListagem"
+                                             oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"/>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+
         </ui:define>
     </ui:composition>
 

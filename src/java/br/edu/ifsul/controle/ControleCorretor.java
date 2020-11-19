@@ -1,7 +1,9 @@
 package br.edu.ifsul.controle;
 
 import br.edu.ifsul.dao.CorretorDAO;
+import br.edu.ifsul.dao.PermissaoDAO;
 import br.edu.ifsul.modelo.Corretor;
+import br.edu.ifsul.modelo.Permissao;
 import br.edu.ifsul.util.Util;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -19,6 +21,10 @@ public class ControleCorretor implements Serializable {
     @EJB
     private CorretorDAO<Corretor> dao;
     private Corretor objeto;
+    @EJB
+    private PermissaoDAO<Permissao> daoPermissao;
+    private Permissao permissao;
+    
     
     public ControleCorretor() {
         
@@ -63,6 +69,20 @@ public class ControleCorretor implements Serializable {
         }        
     }
     
+     public void salvarPermissao(){
+        if(!objeto.getPermissoes().contains(permissao)){
+            objeto.getPermissoes().add(permissao);
+            Util.mensagemInformacao("Permissao adicionado com sucesso!");
+        }else{
+            Util.mensagemErro("Carro já possui este acessorio!");
+        }
+    }
+    
+    public void excluirPermissao(Permissao obj){
+        objeto.getPermissoes().remove(obj);
+        Util.mensagemInformacao("Permissao removido com sucesso!");
+    }
+    
     public CorretorDAO<Corretor> getDao() {
         return dao;
     }
@@ -77,6 +97,22 @@ public class ControleCorretor implements Serializable {
     
     public void setObjeto(Corretor objeto) {
         this.objeto = objeto;
+    }
+
+    public PermissaoDAO<Permissao> getDaoPermissao() {
+        return daoPermissao;
+    }
+
+    public void setDaoPermissao(PermissaoDAO<Permissao> daoPermissao) {
+        this.daoPermissao = daoPermissao;
+    }
+
+    public Permissao getPermissao() {
+        return permissao;
+    }
+
+    public void setPermissao(Permissao permissao) {
+        this.permissao = permissao;
     }
     
 }

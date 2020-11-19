@@ -9,6 +9,7 @@ import br.edu.ifsul.converters.ConverterOrdem;
 import br.edu.ifsul.modelo.Corretor;
 import java.io.Serializable;
 import javax.ejb.Stateful;
+import javax.persistence.Query;
 
 /**
  *
@@ -32,4 +33,30 @@ public class CorretorDAO<TIPO> extends DAOGenerico<Corretor> implements Serializ
         ordemAtual=listaOrdem.get(1);
         converteOrdem=new ConverterOrdem(listaOrdem);
     }
+    
+    @Override
+    public Corretor getObjectById(Object id)throws Exception{
+        Corretor obj = em.find(Corretor.class, id);
+        //inicializa a coleção para evitar o erro LazyInicializationException
+        obj.getPermissoes().size();
+        return obj;
+    }
+    
+    // verifica se o nome de usuario já existe
+    public boolean verificarUnicidadeNomeUsuario(String nomeUsuario) throws Exception{
+        String jpql="from Corretor where nomeUsuario = :pNomeUsuario";
+        Query query = em.createQuery(jpql);
+        query.setParameter("pNomeUsuario",nomeUsuario);
+        if(query.getResultList().size()>0) return false;
+        else return true;
+    }
+    
+     // retorna o usuario para o autenticador
+    public Corretor retornarUsuario(String nomeUsuario) throws Exception{
+        String jpql="from Corretor where nomeUsuario = :pNomeUsuario";
+        Query query = em.createQuery(jpql);
+        query.setParameter("pNomeUsuario",nomeUsuario);
+        return (Corretor)query.getSingleResult();
+    }
+    
 }

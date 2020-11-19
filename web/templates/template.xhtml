@@ -15,9 +15,9 @@
                 <p:menuitem value="Início"
                             url="#{facesContext.externalContext.requestContextPath}/index.xhtml"
                             icon="pi pi-home"/>
-                <p:submenu label="Cadastros">
+                <p:submenu label="Cadastros" rendered="#{controleLogin.corretorAutenticado != null}">
                     <p:column>
-                        <p:submenu label="Básicos">
+                        <p:submenu label="Básicos" rendered="#{controleLogin.corretorAutenticado != null}">
                             <p:menuitem action="#{controleAcessorios.listar()}"
                                         value="Manutenção de Acessorios"
                                         ajax="false"/>
@@ -33,9 +33,9 @@
                         </p:submenu>
                     </p:column>
                 </p:submenu>
-                <p:submenu label="Operações">
+                <p:submenu label="Operações" rendered="#{controleLogin.corretorAutenticado != null}">
                     <p:column>
-                        <p:submenu label="Seguros">
+                        <p:submenu label="Seguros" rendered="#{controleLogin.corretorAutenticado != null}">
                             <p:menuitem action="#{controleSeguro.listar()}"
                                         value="Manutenção de Seguros"
                                         ajax="false"/>
@@ -48,12 +48,35 @@
                         </p:submenu>
                     </p:column>
                 </p:submenu>
-                <p:submenu label="Relatórios">
+                <p:submenu label="Relatórios" rendered="#{controleLogin.corretorAutenticado != null}">
                     <p:column>
-                        <p:submenu label="Seguros">
+                        <p:submenu label="Seguros" rendered="#{controleLogin.corretorAutenticado != null}">
                             <p:menuitem action="#{controleSeguro.imprimeSeguros()}"
                                         value="Seguros"
                                         ajax="false" target="_blank"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Permissões:" rendered="#{controleLogin.corretorAutenticado != null}">
+                    <p:column>
+                        <p:submenu label="Permissão" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controlePermissao.listar()}"
+                                        value="Manutenção de Permissão"
+                                        ajax="false"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Usuário: #{controleLogin.corretorAutenticado != null ? controleLogin.corretorAutenticado.nome : ''}">
+                    <p:column>
+                        <p:submenu label="Efetuar Login" rendered="#{controleLogin.corretorAutenticado == null}">
+                            <p:menuitem action="#{controleLogin.irPaginaLogin()}"
+                                        value="Login" icon="pi pi-user"
+                                        ajax="false"/>
+                        </p:submenu>
+                         <p:submenu label="Efetuar Logout" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controleLogin.efetuarLogout()}"
+                                        value="Logout" icon="pi pi-power-off"
+                                        ajax="false"/>
                         </p:submenu>
                     </p:column>
                 </p:submenu>

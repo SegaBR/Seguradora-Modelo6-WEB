@@ -28,4 +28,55 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    
+    <!-- Segurança com JAAS -->
+    <security-constraint>
+        <display-name>UsuarioAutenticado</display-name>
+        <web-resource-collection>
+            <web-resource-name>privado</web-resource-name>
+            <description/>
+            <url-pattern>/privado/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>USUARIO</role-name>
+            <role-name>ADMINISTRADOR</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>https</display-name>
+        <web-resource-collection>
+            <web-resource-name>https</web-resource-name>
+            <description/>
+            <url-pattern>/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>Seguradora-Model6-Realm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.xhtml</form-login-page>
+            <form-error-page>/loginerror.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description>usuario</description>
+        <role-name>USUARIO</role-name>
+    </security-role>
+    <security-role>
+        <description>administrador</description>
+        <role-name>ADMINISTRADOR</role-name>
+    </security-role>
 </web-app>
