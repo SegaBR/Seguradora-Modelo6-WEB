@@ -15,7 +15,8 @@
                                  icon="pi pi-plus"
                                  update="formEdicao"
                                  process="@this"
-                                 oncomplete="PF('dlg').show();"/>
+                                 oncomplete="PF('dlg').show();"
+                                 rendered="#{p:ifGranted('ADMINISTRADOR')}"/>
 
                 <div align="center">
                     <p:panelGrid columns="11">
