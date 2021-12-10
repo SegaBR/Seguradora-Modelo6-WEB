@@ -12,23 +12,24 @@
         </ui:define>
         <ui:define name="conteudo">
             <div align="center">
-                <h:form>
+                <h:form id="frmLogin">
                     <p:growl/>
                     <p:panelGrid columns="2">
                         <f:facet name="header">
                             <p:outputLabel value="Login de usuário!"/>
                             <f:facet name="footer">
                                 <div align="center">
-                                    <p:commandButton value="Efetuar Login"
+                                    <p:commandButton id="submit" value="Efetuar Login"
                                                      action="#{controleLogin.efetuarLogin()}"/>
                                 </div>
                             </f:facet>
                             <p:outputLabel value="Usuário: "/>
-                            <p:inputText value="#{controleLogin.usuario}"/>
+                            <p:inputText id="usuario" value="#{controleLogin.usuario}"/>
                             <p:outputLabel value="Senha: "/>
-                            <p:password value="#{controleLogin.senha}"/>
+                            <p:password id="senha" value="#{controleLogin.senha}"/>
                         </f:facet>
                     </p:panelGrid>
+           
                 </h:form>
             </div>
         </ui:define>

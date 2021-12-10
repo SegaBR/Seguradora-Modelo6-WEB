@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title><ui:insert name="titulo"></ui:insert></title>
+        <h:outputStylesheet library="css" name="estilos.css"/>
+        <h:outputScript library="js" name="scripts.js"/>
+    </h:head>
+    <h:body>
+        <h:form id="formMenu" prependId="false">
+            <p:megaMenu>
+                <p:menuitem value="Início"
+                            url="#{facesContext.externalContext.requestContextPath}/index.xhtml"
+                            icon="pi pi-home"/>
+                <p:submenu label="Cadastros" rendered="#{controleLogin.corretorAutenticado != null}">
+                    <p:column>
+                        <p:submenu label="Básicos" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controleAcessorios.listar()}"
+                                        value="Manutenção de Acessorios"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controleCarro.listar()}"
+                                        value="Manutenção de Carros"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controleCorretor.listar()}"
+                                        value="Manutenção de Corretores"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controlePessoa.listar()}"
+                                        value="Manutenção de Pessoas"
+                                        ajax="false"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Operações" rendered="#{controleLogin.corretorAutenticado != null}">
+                    <p:column>
+                        <p:submenu label="Seguros" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controleSeguro.listar()}"
+                                        value="Manutenção de Seguros"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controleSinistro.listar()}"
+                                        value="Listagem de Sinistros"
+                                        ajax="false"/>
+                            <p:menuitem action="#{controleCobertura.listar()}"
+                                        value="Listagem de Coberturas"
+                                        ajax="false"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Relatórios" rendered="#{controleLogin.corretorAutenticado != null}">
+                    <p:column>
+                        <p:submenu label="Seguros" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controleSeguro.imprimeSeguros()}"
+                                        value="Seguros"
+                                        ajax="false" target="_blank"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Permissões:" rendered="#{controleLogin.corretorAutenticado != null}">
+                    <p:column>
+                        <p:submenu label="Permissão" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controlePermissao.listar()}"
+                                        value="Manutenção de Permissão"
+                                        ajax="false"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Usuário: #{controleLogin.corretorAutenticado != null ? controleLogin.corretorAutenticado.nome : ''}">
+                    <p:column>
+                        <p:submenu label="Efetuar Login" rendered="#{controleLogin.corretorAutenticado == null}">
+                            <p:menuitem action="#{controleLogin.irPaginaLogin()}"
+                                        value="Login" icon="pi pi-user"
+                                        ajax="false"/>
+                        </p:submenu>
+                         <p:submenu label="Efetuar Logout" rendered="#{controleLogin.corretorAutenticado != null}">
+                            <p:menuitem action="#{controleLogin.efetuarLogout()}"
+                                        value="Logout" icon="pi pi-power-off"
+                                        ajax="false"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+            </p:megaMenu>
+        </h:form>
+        <ui:insert name="conteudo">
+
+        </ui:insert>
+        <ui:include src="ajaxstatus.xhtml"/>
+    </h:body>
+</html>
+
